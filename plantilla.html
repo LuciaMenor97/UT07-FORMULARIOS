@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Obligatorias -->
+    <title>VIDEOSYSTEM</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="Lucia Menor Muñoz">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <!-- Personalizado -->
+    <link rel="stylesheet" href="css/css.css">
+    <link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave|Walter+Turncoat" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/png" href="img/popcorn.ico" />
+</head>
+
+<body>
+    <button type="button" onclick="cerrarVentanas()" id="cerrarVen"><img src="img/windows-close.png" width="60px" height="60px"></button>
+    <header class="container-fluid">
+        <div class="mt-4 container">
+            <p id="titulo" class="text-center">VIDEOSYSTEM<a href="plantilla.html"><img class="mb-2 logo" src="img/popcorn.png"
+                        width="100" height="100"></a>
+            </p>
+        </div>
+ 
+    </header>
+
+    <div style="height: 100%;">
+
+        <nav class="navbar navbar-expand-lg navbar-light container-fluid" id="menu">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!--<button id="botoncerrar" type="button" class="btn btn-link float-right" onclick="cerrarVentanas()">Cerrar
+                ventanas</button>-->
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link text-white" href="#" onclick="showHomePage()">HOME<span class="sr-only btn btn-link">(current)</span></a>
+                    </li>
+                    <li id="li_category" class="nav-item ml-2">
+                        <button id="category" class="nav-link btn btn-link text-white" href="#" onclick="mostrar_categoria()">CATEGORÍAS</button>
+                    </li>
+                    <li id="li_category" class="nav-item ml-2">
+                        <button id="category" class="nav-link btn btn-link text-white" href="#" onclick="ver_producciones()">PRODUCCIONES</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-link text-white" href="" onclick="showActors()">ACTORES</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link btn btn-link text-white" href="" onclick="showDirectors()">DIRECTORES</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="validado" style="display: none">
+                <p id="nmbreUsu" class="d-none"></p>
+                <button type="button" class="btn btn-primary" onclick="cerrarSesion()" style="background-color: #A3E4D7; border: none;">Cerrar
+                    Sesión</button>
+            </div>
+
+        </nav>
+
+        <button id="inicioses" class="btn btn-primary mx-auto d-block w-50" type="button" data-toggle="collapse"
+            data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="background-color: #48C9B0; border: none; color: white; font-size: 30px;">
+            Iniciar sesión
+        </button>
+
+        <div id="collapseExample" class="collapse">
+            <div id="formValidacion" style="display: inline; background-color: white; width: 1000px; padding: 10px; margin: 0 auto; margin-bottom: 10px;"
+                class="d-flex justify-content-between">
+                <span style="color:#48C9B0; font-size: 25px; font-weight: bold;">INICIAR SESIÓN</span>
+                <div class="form-group row mt-4">
+                    <label for="nombresesion" class="col-sm-4 col-form-label">Nombre:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="nombresesion" name="usuario">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="pwd" class="col-sm-4 col-form-label">Contraseña:</label>
+                    <div class="col-sm-8">
+                        <input type="password" class="form-control" id="pwd" name="password">
+                    </div>
+                </div>
+                <p id="errores" style="background-color:red"></p>
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-8">
+                        <button type="button" class="btn btn-primary d-block mx-auto iniciar" onclick="validarSesion()"
+                            style="background-color: #A3E4D7; border: none;">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main id="principalMain" class="container">
+
+
+
+        </main>
+
+        <!--Insertar categorías-->
+        <div class="modal fade" id="insertarcat" tabindex="-1" role="dialog" aria-labelledby="insertarcatTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="insertarcatTitle">AÑADIR CATEGORÍAS</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form action="#" method="post" enctype="multipart/form-data" target="_blank">
+                            <div class="form-group">
+                                <label for="nombre_cat">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombre_cat" required>
+                                <p id="insertcat"></p>
+                            </div>
+                            <div class="form-group">
+                                <label for="descrp_cat">Descripción</label>
+                                <textarea class="form-control" id="descrp_cat" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="img_cat">Imagen:</label>
+                                <input type="text" class="form-control" id="img_cat">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" onclick="insertar_categoria()" data-dismiss="modal"
+                                style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Modificar categorías-->
+        <div class="modal fade" id="modificarcat" tabindex="-1" role="dialog" aria-labelledby="modificarcatTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="modificarcatTitle">MODIFICAR CATEGORÍAS</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form>
+                            <div class="form-group">
+                                <label for="nombrecat">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombrecat">
+                            </div>
+                            <div class="form-group">
+                                <label for="descrpcat">Descripción</label>
+                                <textarea class="form-control" id="descrpcat" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="imgcat">Imagen:</label>
+                                <input type="text" class="form-control" id="imgcat">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="modificar_categoria()" data-dismiss="modal"
+                                id="btnModCat" style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!--Insertar actores-->
+        <div class="modal fade" id="insertaract" role="dialog" aria-labelledby="insertaractTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="insertaractTitle">AÑADIR ACTORES</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form id="insertar_actores" class="container">
+                            <div class="form-group">
+                                <label for="nombre">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombre">
+                            </div>
+                            <div class="form-group">
+                                <label for="apellido">Apellido: *</label>
+                                <input type="text" class="form-control" id="apellido">
+                            </div>
+                            <div class="form-group">
+                                <label for="fecha">Fecha de nacimiento:</label>
+                                <input type="date" class="form-control" id="fecha">
+                            </div>
+                            <div class="form-group">
+                                <label for="img_act">Imagen:</label>
+                                <input type="text" class="form-control" id="img_act">
+                            </div>
+                            <span style="font-size: 20px;">Producciones en las que ha participado:</span>
+                            <div id="producciones">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="insertar_actor()" data-dismiss="modal"
+                                style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Modificar actores-->
+        <div class="modal fade" id="modificaract" tabindex="-1" role="dialog" aria-labelledby="modificaractTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="modificaractTitle">MODIFICAR ACTORES</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form id="modificaractores">
+                            <div class="form-group">
+                                <label for="nombreact">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombreact">
+                            </div>
+                            <div class="form-group">
+                                <label for="apellidoact">Apellido: *</label>
+                                <input type="text" class="form-control" id="apellidoact">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaact">Fecha de nacimiento:</label>
+                                <input type="date" class="form-control" id="fechaact">
+                            </div>
+                            <div class="form-group">
+                                <label for="imgact">Imagen:</label>
+                                <input type="text" class="form-control" id="imgact">
+                            </div>
+                            <span style="font-size: 20px;">Producciones en las que ha participado:</span>
+                            <div id="produccionesmod">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="modificar_actor()" data-dismiss="modal"
+                                id="btnModAct" style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Insertar directores-->
+        <div class="modal fade" id="insertardir" role="dialog" aria-labelledby="insertardirTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="insertardirTitle">AÑADIR DIRECTORES</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form id="insertar_directores">
+                            <div class="form-group">
+                                <label for="nombred">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombred">
+                            </div>
+                            <div class="form-group">
+                                <label for="apellidod">Apellido: *</label>
+                                <input type="text" class="form-control" id="apellidod">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechad">Fecha de nacimiento:</label>
+                                <input type="date" class="form-control" id="fechad">
+                            </div>
+                            <div class="form-group">
+                                <label for="img_d">Imagen:</label>
+                                <input type="text" class="form-control" id="img_d">
+                            </div>
+                            <span style="font-size: 20px;">Producciones en las que ha participado:</span>
+                            <div id="produccionesdir">
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="insertar_director()" data-dismiss="modal"
+                                style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Modificar directores-->
+        <div class="modal fade" id="modificardir" tabindex="-1" role="dialog" aria-labelledby="modificardirTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="modificardirTitle">MODIFICAR DIRECTORES</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form id="modificardirectores">
+                            <div class="form-group">
+                                <label for="nombredir">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombredir">
+                            </div>
+                            <div class="form-group">
+                                <label for="apellidodir">Apellido: *</label>
+                                <input type="text" class="form-control" id="apellidodir">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechadir">Fecha de nacimiento:</label>
+                                <input type="date" class="form-control" id="fechadir">
+                            </div>
+                            <div class="form-group">
+                                <label for="imgdir">Imagen:</label>
+                                <input type="text" class="form-control" id="imgdir">
+                            </div>
+                            <span style="font-size: 20px;">Producciones en las que ha participado:</span>
+                            <div id="produccionesdirmod">
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="modificar_director()" data-dismiss="modal"
+                                id="btnModDir" style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Insertar películas-->
+        <div class="modal fade" id="insertarpel" tabindex="-1" role="dialog" aria-labelledby="insertarpelTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="insertarpelTitle">AÑADIR PELÍCULAS</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form action="#" method="post" enctype="multipart/form-data" target="_blank" id="insertar_peliculas">
+                            <div class="form-group">
+                                <label for="nombrepro">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombrepro">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechapro">Fecha de estreno: *</label>
+                                <input type="date" class="form-control" id="fechapro">
+                            </div>
+                            <div class="form-group">
+                                <label for="imgpro">Imagen:</label>
+                                <input type="text" class="form-control" id="imgpro">
+                            </div>
+                            <div class="form-group">
+                                <label for="descrppro">Descripción:</label>
+                                <textarea class="form-control" id="descrppro"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="duracion">Duración:</label>
+                                <input type="text" class="form-control" id="duracion">
+                            </div>
+                            <div class="form-group">
+                                <label for="link">Link:</label>
+                                <input type="text" class="form-control" id="link">
+                            </div>
+                            <div id="peliculas" class="container">
+                                <!--
+                                <span style="font-size: 20px;">Audios disponibles:</span>
+                                <div class="audios row mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"
+                                            name="audio">
+                                        <label class="form-check-label" for="inlineCheckbox1">Español</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"
+                                            name="audio">
+                                        <label class="form-check-label" for="inlineCheckbox2">Inglés</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                                            name="audio">
+                                        <label class="form-check-label" for="inlineCheckbox3">Francés</label>
+                                    </div>
+                                </div>
+                                <span style="font-size: 20px;">Subtítulos disponibles:</span>
+                                <div class="subtitulos row mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option1"
+                                            name="subtitulo">
+                                        <label class="form-check-label" for="inlineCheckbox4">Español</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option2"
+                                            name="subtitulo">
+                                        <label class="form-check-label" for="inlineCheckbox5">Inglés</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option3"
+                                            name="subtitulo">
+                                        <label class="form-check-label" for="inlineCheckbox6">Francés</label>
+                                    </div>
+                                </div>
+                                -->
+                                <span style="font-size: 20px;">Categorías:</span>
+                                <div id="categoriapel" class="row mb-3" style="margin-left: 0px;">
+                                </div>
+                                <span style="font-size: 20px;">Actores:</span>
+                                <div id="actorpel" class="row mb-3" style="margin-left: 0px;">
+                                </div>
+                                <span style="font-size: 20px;">Directores:</span>
+                                <div id="dirpel" class="row mb-3" style="margin-left: 0px;">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="insertar_pelicula()" data-dismiss="modal"
+                                style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Insertar películas-->
+        <div class="modal fade" id="insertarser" tabindex="-1" role="dialog" aria-labelledby="insertarserTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #A3E4D7">
+                        <h5 class="modal-title text-white" id="insertarserTitle">AÑADIR SERIES</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="background-color: #A3E4D7">
+                        <form action="#" method="post" enctype="multipart/form-data" target="_blank" id="insertar_series">
+                            <div class="form-group">
+                                <label for="nombreser">Nombre: *</label>
+                                <input type="text" class="form-control" id="nombreser">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaser">Fecha de estreno: *</label>
+                                <input type="date" class="form-control" id="fechaser">
+                            </div>
+                            <div class="form-group">
+                                <label for="imgser">Imagen:</label>
+                                <input type="text" class="form-control" id="imgser">
+                            </div>
+                            <div class="form-group">
+                                <label for="descrpser">Descripción:</label>
+                                <textarea class="form-control" id="descrpser"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="duracionser">Duración:</label>
+                                <input type="text" class="form-control" id="duracionser">
+                            </div>
+                            <div class="form-group">
+                                <label for="linkser">Link:</label>
+                                <input type="text" class="form-control" id="linkser">
+                            </div>
+                            <div id="series" class="container">
+                                <!--
+                                    <span style="font-size: 20px;">Audios disponibles:</span>
+                                    <div class="audios row mb-3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"
+                                                name="audio">
+                                            <label class="form-check-label" for="inlineCheckbox1">Español</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"
+                                                name="audio">
+                                            <label class="form-check-label" for="inlineCheckbox2">Inglés</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                                                name="audio">
+                                            <label class="form-check-label" for="inlineCheckbox3">Francés</label>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 20px;">Subtítulos disponibles:</span>
+                                    <div class="subtitulos row mb-3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option1"
+                                                name="subtitulo">
+                                            <label class="form-check-label" for="inlineCheckbox4">Español</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option2"
+                                                name="subtitulo">
+                                            <label class="form-check-label" for="inlineCheckbox5">Inglés</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option3"
+                                                name="subtitulo">
+                                            <label class="form-check-label" for="inlineCheckbox6">Francés</label>
+                                        </div>
+                                    </div>
+                                    -->
+                                <span style="font-size: 20px;">Categorías:</span>
+                                <div id="categoriaser" class="row mb-3" style="margin-left: 0px;">
+                                </div>
+                                <span style="font-size: 20px;">Actores:</span>
+                                <div id="actorser" class="row mb-3" style="margin-left: 0px;">
+                                </div>
+                                <span style="font-size: 20px;">Directores:</span>
+                                <div id="dirser" class="row mb-3" style="margin-left: 0px;">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between" style="background-color: #A3E4D7">
+                        <p>(*) Campo obligatorio</p>
+                        <div>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="insertar_serie()" data-dismiss="modal"
+                                style="background-color: #48C9B0; border: none;">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="container">
+            <p class="text-center">Lucía Menor - DWEC</p>
+        </footer>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- Personalizado -->
+        <script src="js/baseexception.js"></script>
+        <script src="js/objetos.js"></script>
+        <script src="js/videosystem.js"></script>
+        <script src="js/formularios.js"></script>
+        <script src="js/populate.js"></script>
+</body>
+
+</html>
